@@ -5,6 +5,12 @@ set encoding=utf-8
 set clipboard=unnamedplus
 set incsearch
 set noshowmode
+set noundofile
+set nocursorline
+set nocursorcolumn
+set scrolljump=5
+set lazyredraw
+set synmaxcol=180
 filetype off
 "' Specify a directory for plugins
 " - For Neovim: stdpath('data') . '/plugged'
@@ -17,10 +23,15 @@ Plug 'preservim/nerdtree'
 Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
 Plug 'kien/ctrlp.vim'
 Plug 'jiangmiao/auto-pairs'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'fatih/vim-go', { 'tag': '*' }
 Plug 'nsf/gocode', { 'tag': 'v.20150303', 'rtp': 'vim' }
-Plug 'morhetz/gruvbox'
+Plug 'gruvbox-community/gruvbox'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install', 'branch': 'release/0.x' }
+Plug 'mlaursen/vim-react-snippets'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 call plug#end()
 
 filetype plugin indent on    " required
@@ -30,6 +41,7 @@ if (has("termguicolors"))
  set termguicolors
 endif
 colorscheme gruvbox
+set viminfo='0,:0,<0,@0,f0
 
 set noerrorbells
 set background=dark
@@ -46,9 +58,11 @@ autocmd BufWritePre * %s/\s\+$//e
 set nobackup
 
 set encoding=UTF-8
+"Prettier Functionality
 let g:prettier#autoformat = 1
-let g:prettier#autoformat_require_pragma = 0
-let g:prettier#autoformat_config_present = 1
+"let g:prettier#autoformat_require_pragma = 0
+"let g:prettier#autoformat_config_present = 1
+autocmd BufWritePre,InsertLeave *.js,*.json,*.css,*.scss,*.less,*.graphql PrettierAsync
 
 " Some servers have issues with backup files, see #649.
 set nobackup
@@ -225,7 +239,7 @@ nnoremap <silent> <Leader>vr :vertical resize 30<CR>
 nnoremap <silent> <Leader>r+ :vertical resize +5<CR>
 nnoremap <silent> <Leader>r- :vertical resize -5<CR>
 nnoremap <silent> <Leader>;; iif err != nil { <esc>o} <esc>:w<CR>
-
+nnoremap <C-p> :GFiles<CR>
 nmap <leader><leader> V
 vmap <Leader>y "+y
 vmap <Leader>= <C-W><C-=>
